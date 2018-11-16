@@ -40,11 +40,6 @@ function handle(option, globalRef) {
         option.absoluteFromPath = path.resolve(option.context, option.from);
     }
 
-    if (option.ignore && !isArray(option.ignore)) {
-        option.ignore = [option.ignore];
-    } else {
-        option.ignore = [];
-    }
     if (path.extname(option.to) === '' || option.to.slice(-1) === '/') {
         option.toType = 'dir';
     } else {
@@ -112,6 +107,7 @@ function handle(option, globalRef) {
         .then((option) => {
             // 文件不存在直接resolve
             if (option.fromType === 'nonexistent') {
+                info(`from path ${option.absoluteFromPath} not exist`);
                 return Promise.resolve();
             }
 
@@ -170,6 +166,7 @@ function handle(option, globalRef) {
                                 }
                             }
 
+                            info(`writing '${file.webpackTo}' to compilation assets from '${file.fromPath}'`);
                             return writeContent(compilation, file.webpackTo, content);
                         } else {
                             return writeFile(option, globalRef, file);

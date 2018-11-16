@@ -12,7 +12,8 @@
 }]
     others = {
         debug: false,
-        ignore: '' || []
+        ignore: '' || [],
+        context
     }
  */
 
@@ -21,24 +22,26 @@
  * 不报错的原因
  */
 
-
+const path = require('path');
 const handle = require('./handleFile');
+const isArray = require('./utils/lib');
 
-function FileMinifyWebpackPlugin(options = [], others = {
+function FileMinifyWebpackPlugin(options = [], globOption = {
     debug: 'warning'
 }) {
     if (!Array.isArray(options)) {
         throw new Error('[file-minify-webpack-plugin] options must be an array');
     }
 
-    others.debug = others.debug || 'warning';
+    globOption.debug = globOption.debug || 'warning';
+    globOption.ignore = globOption.ignore || [];
 
-    if (others.debug === true) {
-        others.debug = 'info';
+    if (globOption.debug === true) {
+        globOption.debug = 'info';
     }
 
     const debugLevels = ['warning', 'info', 'debug'];
-    const debugLevelIndex = debugLevels.indexOf(others.debug);
+    const debugLevelIndex = debugLevels.indexOf(globOption.debug);
 
     function log(msg, level) {
         if (level === 0) {
@@ -71,7 +74,9 @@ function FileMinifyWebpackPlugin(options = [], others = {
     };
 
     const apply = (compiler) => {
-        const context = compiler.options.context;
+        const context = path.resolve(compiler.options.context, globOption.context);
+        debug(`root path: ${context}`);
+        const globalIgnore = globOption.ignore;
         let fileDependencies;
         let contextDependencies;
 
@@ -105,6 +110,13 @@ function FileMinifyWebpackPlugin(options = [], others = {
 
             options.forEach(option => {
                 option = Object.assign({}, DEFALUT_OPTION, option);
+
+                if (option.ignore && !isArray(option.ignore)) {
+                    option.ignore = [option.ignore];
+                } else {
+                    option.ignore = [];
+                }
+                option.ignore = option.ignore.concat(globalIgnore);
 
                 tasks.push(Promise.resolve().then(() => {
                     return handle(option, globalRef);
