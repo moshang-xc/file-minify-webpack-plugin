@@ -1,0 +1,27 @@
+{
+    "name": "file-minify-webpack-plugin",
+    "version": "1.0.0",
+    "description": "compress files like js css html",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moshang-xc"
+    },
+    "keywords": [
+        "minify",
+        "compress"
+    ],
+    "author": "moshang",
+    "license": "ISC",
+    "devDependencies": {
+        "clean-css": "^4.2.1",
+        "globby": "^8.0.1",
+        "html-minifier": "^3.5.21",
+        "is-glob": "^4.0.0",
+        "minimatch": "^3.0.4",
+        "uglify-js": "^3.4.9"
+    }
+}
