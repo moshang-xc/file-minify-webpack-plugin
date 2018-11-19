@@ -24,10 +24,11 @@
 
 const path = require('path');
 const handle = require('./handleFile');
-const isArray = require('./utils/lib');
 
 function FileMinifyWebpackPlugin(options = [], globOption = {
-    debug: 'warning'
+    debug: 'warning',
+    context: '',
+    ignore: []
 }) {
     if (!Array.isArray(options)) {
         throw new Error('[file-minify-webpack-plugin] options must be an array');
@@ -111,11 +112,14 @@ function FileMinifyWebpackPlugin(options = [], globOption = {
             options.forEach(option => {
                 option = Object.assign({}, DEFALUT_OPTION, option);
 
-                if (option.ignore && !isArray(option.ignore)) {
-                    option.ignore = [option.ignore];
+                if (option.ignore) {
+                    if (!Array.isArray(option.ignore)) {
+                        option.ignore = [option.ignore];
+                    }
                 } else {
                     option.ignore = [];
                 }
+
                 option.ignore = option.ignore.concat(globalIgnore);
 
                 tasks.push(Promise.resolve().then(() => {

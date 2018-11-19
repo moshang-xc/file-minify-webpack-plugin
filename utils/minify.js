@@ -10,7 +10,7 @@ const OPTION = {
             beautify: false,
             // 删除所有的注释
             comments: false,
-            preamble: '/* CopyRight 2018 TENDA/IPCOM TIEM:' + (new Date()) + ' */'
+            preamble: '/* TIEM:' + (new Date()) + ' */'
         },
         compress: {
             // 移除没用的代码
@@ -50,10 +50,10 @@ function minify(content, type, option = {}) {
     switch (type) {
         case 'js':
             value = UglifyJS.minify(content, tOption);
-            if (typeof content === 'object') {
-                console.log('uglifyjs error');
+            if (value && value.error) {
+                global.console.log('uglifyjs error');
             } else {
-                content = value;
+                content = value.code;
             }
             break;
         case 'css':

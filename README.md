@@ -1,7 +1,7 @@
 # file-minify-webpack-plugin
 webpack文件压缩插件，同时可以进行文件的拷贝移动，参考copy-webpack-plugin
 
-可以对当前的静态文件进行移动和压缩(html,css,js,json)，同时也可对其它loader、plugin处理过的文件进行压缩和复制等
+可以对当前的静态文件进行移动和压缩(html,css,js,json)
 
 ## 安装
 

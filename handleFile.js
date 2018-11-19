@@ -9,9 +9,6 @@ const {
 const {
     stat
 } = require('./utils/promisely');
-const {
-    isArray
-} = require('./utils/lib');
 const minify = require('./utils/minify');
 
 function handle(option, globalRef) {
