@@ -13,7 +13,10 @@
     others = {
         debug: false,
         ignore: '' || [],
-        context
+        context,
+        afterTask(complication){
+
+        }
     }
  */
 
@@ -25,14 +28,16 @@
 const path = require('path');
 const handle = require('./handleFile');
 
-function FileMinifyWebpackPlugin(options = [], globOption = {
-    debug: 'warning',
-    context: '',
-    ignore: []
-}) {
+function FileMinifyWebpackPlugin(options, globOption) {
     if (!Array.isArray(options)) {
         throw new Error('[file-minify-webpack-plugin] options must be an array');
     }
+
+    globOption = Object.assign({}, globOption, {
+        debug: 'warning',
+        context: '',
+        ignore: []
+    });
 
     globOption.debug = globOption.debug || 'warning';
     globOption.ignore = globOption.ignore || [];
@@ -127,7 +132,12 @@ function FileMinifyWebpackPlugin(options = [], globOption = {
                 }));
             });
 
-            Promise.all(tasks).then(() => callback())
+            Promise.all(tasks).then(() => {
+                    if (globOption.afterTasks && typeof globOption.afterTasks === 'function') {
+                        globOption.afterTasks(compilation);
+                    }
+                    return callback();
+                })
                 .catch((err) => {
                     compilation.errors.push(err);
                 });

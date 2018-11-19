@@ -151,6 +151,8 @@ function handle(option, globalRef) {
                             return Promise.resolve();
                         }
 
+                        file.webpackTo = file.webpackTo.replace(/\\/g, '/');
+
                         let asset;
                         if (asset = compilation.assets[file.webpackTo]) {
                             let content = asset.source();

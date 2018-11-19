@@ -133,8 +133,9 @@ const config = {
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
 |[`debug`](#debug)|`{String}`|**`'warning'`**|[Debug Options](#debug)|
-|[`ignore`](#ignore)|`{Array}`|`[]`|全局需要忽略的`from`文件，对所有的option生效|
+|[`ignore`](#global-ignore)|`{Array}`|`[]`|全局需要忽略的`from`文件，对所有的option生效|
 |[`context`](#context)|`{String}`|`compiler.options.context`|全局上下文根目录|
+|[`afterTask`](#afterTask)|`{function}`|`(complication) => ''`|执行完成所有压缩复制任务后的操作|
 
 ### `debug`
 
@@ -180,7 +181,7 @@ const config = {
 ]
 ```
 
-### `ignore`
+### `global-ignore`
 
 **webpack.config.js**
 ```js
@@ -200,6 +201,20 @@ const config = {
   new FileMinifyWebpackPlugin(
     [ ...patterns ],
     { context: '/app' }
+  )
+]
+```
+
+### `afterTask`
+
+**webpack.config.js**
+```js
+[
+  new FileMinifyWebpackPlugin(
+    [ ...patterns ],
+    { afterTask:(complication) =>{
+      ...
+    })}
   )
 ]
 ```
